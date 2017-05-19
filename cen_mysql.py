@@ -100,10 +100,15 @@ class DB():
         except mysql.connector.Error as err:
             print(err.msg)
 
+    def get_columns(self, table):
+        q = "SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='cendb' AND `TABLE_NAME`='"
+        q = q + table + "';"
+        self.query(q)
+
     def create_database(self):
         try:
             self.cursor.execute(
-                "CREATE DATABASE {} DEFAULT CHARACTER SET `utf8`".format(DB_NAME))
+                "CREATE DATABASE {} DEFAULT CHARACTER SET `utf8`".format(self.DB_NAME))
         except mysql.connector.Error as err:
             print("Failed creating database: {}".format(err))
             exit(1)
@@ -111,11 +116,11 @@ class DB():
     def init_db(self):
         # Create the database if it does not exist yet. Exit if this fails.
         try:
-            self.cnx.database = DB_NAME
+            self.cnx.database = self.DB_NAME
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_BAD_DB_ERROR:
                 create_database(self.cursor)
-                self.cnx.database = DB_NAME
+                self.cnx.database = self.DB_NAME
             else:
                 print(err)
                 exit(1)
