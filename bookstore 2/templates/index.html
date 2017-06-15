@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+{% load static from staticfiles %}
+
+{% block title %}Book Store {% endblock %}
+
+
+{% block content %}
+    <header class="jumbotron">
+        <div class="container">
+            <div class="row row-header">
+                <div class="col-xs-12 col-sm-8">
+                    <h1>My Bookstore</h1>
+                    <p style="padding:20px;"></p>
+                    <p>The best book store in your city, selling the best in Tech and Sci Fi books with
+                    amazing prices</p>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <img src="{% static 'img/bookNerd.jpeg' %}">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="carousel slide" data-ride="carousel" id="bookSlides" style="width: 600px; margin: auto">
+            <ol class="carousel-indicators">
+                <li data-target="#bookSlides" data-slide-to="0" class="active"></li>
+                <li data-target="#bookSlides" data-slide-to="1"></li>
+                <li data-target="#bookSlides" data-slide-to="2"></li>
+            </ol>
+
+            <div class="carousel-inner">
+                <div class="item active pic">
+                    <img src="{% static 'img/bookstore.jpg' %}" alt="image">
+                    <div class="carousel-caption">
+                        <h2>This is the heading 1</h2>
+                        <p>We have one of the largest selection of books for affordable prices</p>
+                    </div>
+                </div>
+                <div class="item pic">
+                    <img src="{% static 'img/stormtrooper.jpg' %}" alt="image">
+                    <div class="carousel-caption">
+                        <h2>This is the heading 2</h2>
+                        <p>The best Science Fiction books</p>
+                    </div>
+                </div>
+                <div class="item pic">
+                    <img src="{% static 'img/wozniak.jpg' %}" alt="image">
+                    <div class="carousel-caption">
+                        <h2>This is the heading 3</h2>
+                        <p>The best books in Computer Science</p>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#bookSlides" class="left carousel-control" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a href="#bookSlides" class="right carousel-control" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+    </div>
+
+    <div>
+        <p style="padding:25px"></p>
+    </div>
+
+{% endblock %}
