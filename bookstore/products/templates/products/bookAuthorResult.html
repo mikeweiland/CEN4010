@@ -1,0 +1,15 @@
+{% extends 'products/bookResults.html' %}
+
+{% block title %}
+{% for a in author %}
+Books by {{ a.first_name }} {{ a.last_name }}
+{% endfor %}
+{% endblock %}
+
+{% block result_title %}
+
+{% for a in author %}
+Book(s) by {{ a.first_name }} {{ a.last_name }}
+{% endfor %}
+
+{% endblock %}

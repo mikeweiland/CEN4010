@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% load static from staticfiles %}
+{% block title %} {{ book.title }} {% endblock %}
+{% block content %}
+<div class="container">
+    <p style="padding:25px"> </p>
+
+    <div class="row">
+        <div class="col-xs-6 col-sm-3 col-sm-push-1">
+            <img src="{% static  book.cover_file_name  %}" class="result" height="300" width="300">
+        </div>
+        <div class="col-xs-3 col-sm-3 col-sm-push-2" style="border-right:1px solid white; height:310px;">
+            <h3>{{ book.title }}</h3>
+            <h4>by {{ book.author.first_name }} {{book.author.last_name }}</h4>
+            <h4>{{ book.rating }} Rating</h4>
+        </div>
+        <div class="col-xs-3 col-sm-2 col-sm-push-3"  >
+            <h3>${{ book.price }}</h3>
+            <p style="padding:10px;"></p>
+            {% include 'payments/quantityForm.html' %}
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-push-1" style="text-align:center" >
+            <h2>Description</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class=" col-sm-4 col-sm-push-4 ">
+            <p>{{ book.description }}</p>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-sm-push-1" style="text-align:center">
+            <h2>Author Biography</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class=" col-sm-4 col-sm-push-4 ">
+            <p>{{ book.author.bio }}</p>
+            <p style="padding:10px"></p>
+            {% if book_by_author|length > 1 %}
+                <a href="{% url 'products:bookByAuthor' book.author.id %}" style="color:gray;">More Books by
+                    {{ book.author.first_name }} {{book.author.last_name }}</a>
+            {% endif %}
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-3 col-sm-push-1">
+            <h2>Customer Reviews</h2>
+        </div>
+    </div>
+
+    <p style="padding:25px"></p>
+</div>
+
+{% endblock %}

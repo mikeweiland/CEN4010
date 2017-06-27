@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block title %}Manage Account {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Manage Account</h1>
+    <p style="padding:10px"></p>
+
+    <form method="POST" action="{% url 'accounts:manageAccount' %}" >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p style="padding:10px"></p>
+        <button type="submit" class="btn btn-md btn-primary">Save</button>
+    </form>
+</div>
+
+<div>
+    <p style="padding:25px"></p>
+</div>
+
+{% endblock %}
+

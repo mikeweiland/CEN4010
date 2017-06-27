@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% block title %}Display CC's {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Credit/Debit Cards</h2>
+    {% for card in cards %}
+    <p>{{ card.user.nickname }} Card </p>
+    <p>{{ card.cc_number }}</p>
+    <form method="POST" action="#">
+        {% csrf_token %}
+        <input type="hidden" value="{{ card.id }}">
+        <input type="submit" class="btn btn-md btn-primary" value="Edit">
+    </form>
+    {% endfor %}
+    <!--<form method="POST" action="{% url 'payments:addCC' %}">
+        <input type="submit" class="btn btn-md btn-primary" value="Add a New Card">
+    </form> -->
+</div>
+
+{% endblock %}

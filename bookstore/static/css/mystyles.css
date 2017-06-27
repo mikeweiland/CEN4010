@@ -1,0 +1,106 @@
+.row-header{
+    margin:0px auto;
+    padding:0px auto;
+}
+
+.row-content{
+    margin:0px auto;
+    padding: 50px 0px 50px 0px;
+    border-bottom:1px ridge;
+    min-height:400px;
+}
+
+.row-footer{
+    background-color: darkgrey;
+    margin:0px auto;
+    padding:20px 0px 20px 0px;
+}
+
+.jumbotron{
+    padding:85px 30px 85px 30px;
+    margin:0px auto;
+    background: silver;
+    color:black;
+}
+
+address{
+    font-size:80%;
+    margin: 0px;
+    color:#0f0f0f;
+}
+
+body{
+    padding:100px 0px 0px 0px;
+    z-index: 0;
+}
+
+.navbar-inverse{
+    color: gold;
+    background: black;
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus{
+    color: gold;
+    background: silver;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus{
+    color: goldenrod;
+    background: black;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu >li > a,
+.navbar-inverse .navbar-nav .open .dropdown-menu {
+    background-color: black;
+    color: gold;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover{
+    color: #000000;
+}
+
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+.navTabColor{
+    color:goldenrod;
+}
+
+@media (min-width: 768px) {
+    .navbar-nav.navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translatex(-50%);
+        padding: 8px;
+    }
+}
+
+.rowBackground{
+    background-color:black;
+}
+
+.pic {
+    display: block;
+    margin: auto;
+    width: 100%;
+}
+
+
+.carousel-inner{
+    width:100%;
+    max-height: 600px !important;
+    margin: auto;
+}
+
+.middle{
+   text-align:center;
+}
+
