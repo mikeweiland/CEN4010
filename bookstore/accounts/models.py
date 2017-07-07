@@ -45,7 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=50, default=None)
     last_name = models.CharField(max_length=50, default=None)
     password = models.CharField(max_length=255)
-    email_address = models.CharField(unique=True, max_length=255)
+    email_address = models.EmailField(unique=True, max_length=255)
     last_login = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'nickname'
 
-    REQUIRED_FIELDS = ['email_address']
+    REQUIRED_FIELDS = ['email_address','password']
 
     def __str__(self):
         return "@{}".format(self.nickname)
@@ -72,13 +72,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Address(models.Model):
-    address_id = models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     street_address = models.CharField(max_length=255)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=2)
     zip_code = models.CharField(max_length=5)
-    is_shipping_address = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return "@{}".format(self.user.nickname) + " addr : " + self.street_address
 
     class Meta:
         managed = True

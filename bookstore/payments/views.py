@@ -1,13 +1,73 @@
 import decimal
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .forms import EditCreditCart
+from django.views.decorators.csrf import csrf_protect
+from django.views.generic import CreateView, DeleteView
+from .forms import CreditCardForm
 from products.models import Book
 from .models import OrderItem, Order, CreditCard
 from django.shortcuts import get_object_or_404
 
+
+#########################################################################################################
+##                                   CREDIT CARD FUNCTIONS                                            ##
+########################################################################################################
+
+
+def display_credit_cards(request):
+    online_user = request.user
+    cards = CreditCard.objects.filter(user_id=online_user.user_id)
+    return render(request, 'payments/displayCreditCards.html', {'cards': cards})
+
+
+class CreditCardCreate(CreateView):
+    template_name = 'payments/addCreditCard.html'
+    model = CreditCard
+    form_class = CreditCardForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.save()
+        return super(CreditCardCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('payments:displayCC')
+
+
+class CreditCardDelete(DeleteView):
+    model = CreditCard
+    success_message = 'Credit Card has been successfully removed.'
+
+    def get_success_url(self):
+        return reverse('payments:displayCC')
+
+    def get_object(self):
+        cc_id = self.request.POST.get('cc_id')
+        return get_object_or_404(CreditCard, pk=cc_id)
+
+
+
+@csrf_protect
+def manage_credit_card(request):
+    cc_id = request.POST.get("cc_id")
+    cc = CreditCard.objects.get(pk=cc_id)
+    form = CreditCardForm(request.POST or None, initial={'name_on_card': cc.name_on_card, 'cc_number': cc.cc_number,
+                                                             'security_code': cc.security_code, 'expiration': cc.expiration})
+
+    if request.method == 'POST':
+        if form.is_valid():
+            cc.name_on_card = form.cleaned_data['name_on_card']
+
+    else:
+        form = CreditCardForm(instance=cc)
+
+    return render(request, 'payments/updateCreditCard.html', {'form': form})
+
+
+#########################################################################################################
+##                                   SHOPPING CART FUNCTIONS                                           ##
+########################################################################################################
 
 def display_shopping_cart(request):
     # get shopping cart id
@@ -17,18 +77,6 @@ def display_shopping_cart(request):
     order_items = OrderItem.objects.filter(order_id=order_id)
     shopping_cart = Order.objects.filter(pk=order_id)
     return render(request, 'payments/shoppingCart.html', {'order_items': order_items, 'shopping_cart':shopping_cart})
-
-
-def display_credit_cards(request):
-    online_user = request.user
-    cards = CreditCard.objects.filter(user_id=online_user.user_id)
-    return render(request, 'payments/displayCreditCards.html', {'cards': cards})
-
-
-def manage_credit_card(request):
-    online_user = request.user
-    #form = EditCreditCart(request.POST or None, initial={'name_on_card'=online_user})
-    return render(request,'payments/managePayment.html') #{'form':form})
 
 
 def add_book_to_cart(request):
