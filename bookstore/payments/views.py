@@ -6,8 +6,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import CreateView, DeleteView
 from .forms import CreditCardForm
 from products.models import Book
-from .models import OrderItem, Order, CreditCard
+from .models import OrderItem, Order, CreditCard, FutureOrderItem, FutureOrder
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 
 
 #########################################################################################################
@@ -32,20 +33,20 @@ class CreditCardCreate(CreateView):
         return super(CreditCardCreate, self).form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, 'Credit Card has been successfully added.')
         return reverse('payments:displayCC')
 
 
 class CreditCardDelete(DeleteView):
     model = CreditCard
-    success_message = 'Credit Card has been successfully removed.'
 
     def get_success_url(self):
+        messages.success(self.request, 'Credit Card has been successfully removed.')
         return reverse('payments:displayCC')
 
     def get_object(self):
         cc_id = self.request.POST.get('cc_id')
         return get_object_or_404(CreditCard, pk=cc_id)
-
 
 
 @csrf_protect
@@ -74,9 +75,16 @@ def display_shopping_cart(request):
     if 'orderId' in request.session:
         order_id = request.session['orderId']
 
+    # get future cart id
+    if 'fOrderId' in request.session:
+        f_order_id = request.session['fOrderId']
+
     order_items = OrderItem.objects.filter(order_id=order_id)
+    future_order_items = FutureOrderItem.objects.filter(future_order_id=f_order_id)
     shopping_cart = Order.objects.filter(pk=order_id)
-    return render(request, 'payments/shoppingCart.html', {'order_items': order_items, 'shopping_cart':shopping_cart})
+
+    return render(request, 'payments/shoppingCart.html', {'order_items': order_items, 'shopping_cart':shopping_cart,
+                                                          'future_order_items':future_order_items})
 
 
 def add_book_to_cart(request):
@@ -173,4 +181,24 @@ def update_cart_price(order_id, book_added_price):
     order.save()
 
 
+#########################################################################################################
+##                                   FUTURE ORDER FUNCTIONS                                           ##
+########################################################################################################
 
+def add_book_future_order(request):
+    if 'fOrderId' in request.session:
+        f_order_id = request.session['fOrderId']
+
+    book_id = request.POST.get('book_id')
+    next = request.POST.get('next', '/')
+
+    book = Book.objects.get(id=book_id)
+
+    # check to see if book already exists in future order
+
+    add_future_book = FutureOrderItem.objects.create(book_id=book.id, future_order_id=f_order_id)
+    add_future_book.save()
+
+    messages.success(request, 'Book was successfully added to future order.')
+
+    return HttpResponseRedirect(next)

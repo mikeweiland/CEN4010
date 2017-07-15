@@ -36,6 +36,7 @@ class Book(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     description = models.CharField(max_length=2000, blank=True, null=True)
     publisher = models.CharField(max_length=255, blank=True, null=True)
+    release_date = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -53,6 +54,7 @@ class Review(models.Model):
     user_rating = models.DecimalField(max_digits=3, decimal_places=2)
     review_header = models.CharField(max_length=255)
     review_body = models.TextField()
+    anonymous = models.BooleanField(default=False)
 
     def __str__(self):
         return self.review_header

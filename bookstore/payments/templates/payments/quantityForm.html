@@ -2,7 +2,7 @@
     <div class="form-group">
         {% csrf_token %}
         <label for="quantityValue">Quantity </label>
-        <input type="number" name="quantity" id="quantityValue" style="width:50px;">
+        <input type="number" name="quantity" id="quantityValue" style="width:50px;" min="1" value="1">
         <input type="hidden" name="bookId" value="{{ book.id }}">
         <input type="hidden" name="price" value="{{ book.price }}">
         <input type="hidden" name="next" value="{{ request.path }}">

@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 {% csrf_token %}
                                 <label class="fieldSizeFont" for="quantityValue">Quantity </label>
-                                <input type="number" name="quantity" id="quantityValue" style="width:50px;" value="{{ order_item.quantity }}">
+                                <input type="number" name="quantity" id="quantityValue" style="width:50px;" value="{{ order_item.quantity }}" min="1">
                                 <input type="hidden" name="order_item_id" value="{{ order_item.id }}">
                                 <input type="hidden" name="next" value="{{ request.path }}">
                             </div>
@@ -78,6 +78,28 @@
                     <p class="fieldSizeFont">Total Price ${{ cart.total_price }}</p>
                 </div>
             {% endfor %}
+
+        <div class="row">
+            <div class="col-xs-8 col-sm-8">
+                <h2>Future Order</h2>
+                <p style="padding:10px"></p>
+                {% for future_order_item in future_order_items %}
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-4">
+                            <img src="{% static future_order_item.book.cover_file_name %}" height="170" width="180">
+                        </div>
+                        <div class="col-xs-3 col-sm-3">
+                            <p class="fieldSizeFont">{{ future_order_item.book.title }}</p>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-sm-push-2">
+                            <p class="fieldSizeFont">${{ future_order_item.book.price }}</p>
+                        </div>
+                    </div>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+
         </div>
 
     {% endif %}
