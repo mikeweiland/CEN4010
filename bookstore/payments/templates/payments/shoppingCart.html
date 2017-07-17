@@ -5,6 +5,18 @@
 
 {% block content %}
 
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+
 <div class="container">
 
     <p style="padding:10px"></p>
@@ -90,9 +102,22 @@
                         </div>
                         <div class="col-xs-3 col-sm-3">
                             <p class="fieldSizeFont">{{ future_order_item.book.title }}</p>
+                            <p class="fieldSizeFont">Item # {{ future_order_item.book.id }}</p>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-sm-push-2">
                             <p class="fieldSizeFont">${{ future_order_item.book.price }}</p>
+                        </div>
+                        <div class="col-xs-8 col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <a href="{% url 'payments:moveFutureBookToCart' future_order_item.book.id %}">
+                                        <button class="btn btn-sm btn-primary">Move to Shopping Cart</button></a>
+                                </div>
+                                <div class="col-sm-2 col-sm-push-4 ">
+                                    <a href="{% url 'payments:deleteFutureBook' future_order_item.book.id %}">
+                                        <button class="btn btn-sm btn-danger">Remove</button></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <hr>

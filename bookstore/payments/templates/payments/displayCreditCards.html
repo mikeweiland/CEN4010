@@ -12,6 +12,7 @@
 
 {% block title %}Display CC's {% endblock %}
 
+
 {% block content %}
 
 {% if messages %}
@@ -35,8 +36,7 @@
 
         <div class="row">
             <div class="col-sm-3">
-                <form action="{% url 'payments:manageCC' %}" method="POST" class="form-inline">
-                    {% csrf_token %}
+                <form action="{% url 'payments:manageCC' %}" method="GET" class="form-inline">
                     <input type="hidden" value="{{ card.id }}" name="cc_id">
                     <button type="submit" class="btn btn-md btn-primary">Edit Card</button>
                 </form>
