@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 {% load static from staticfiles %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width , initial-scale=1">
     <title>{% block title %} {% endblock %}</title>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -13,11 +15,10 @@
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/bootstrap-social.css' %}" rel="stylesheet" type="text/css">
     <style>
-    .fieldSizeFont{
-        font-size:17px;
-        font-family:arial;
-    }
-
+        .fieldSizeFont{
+            font-size:17px;
+            font-family:arial;
+        }
     </style>
 </head>
 <body style="background-color: silver">
@@ -184,9 +185,11 @@
             </div>
         </div>
     </footer>
-
     <!-- jQuery(neccessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    {% block javascript_code %} {% endblock %}
+
 </body>
 </html>

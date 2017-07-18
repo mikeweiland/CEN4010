@@ -50,10 +50,22 @@ class Order(models.Model):
         db_table = 'orders'
 
 
+class FutureOrder(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Future Order : " + self.user.nickname
+
+    class Meta:
+        managed = True
+        db_table = 'future_orders'
+
+
 class OrderItem(models.Model):
     id = models.AutoField(primary_key=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orders')
-    book = models.ForeignKey(Book, related_name='books')
+    book = models.ForeignKey(Book, related_name='book')
     quantity = models.IntegerField(default=1)
     payed_item = models.BooleanField(default=False)
     book_price_quantity = models.DecimalField(max_digits=5, decimal_places=2, default=0)
@@ -64,6 +76,21 @@ class OrderItem(models.Model):
     class Meta:
         managed = True
         db_table = 'order_items'
+
+
+class FutureOrderItem(models.Model):
+    id = models.AutoField(primary_key=True)
+    future_order = models.ForeignKey(FutureOrder, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='future_book')
+
+    def __str__(self):
+        return "Future Order Item : " + self.book.title + " for " + self.future_order.user.nickname
+
+    class Meta:
+        managed = True
+        db_table = 'future_order_items'
+
+
 
 
 

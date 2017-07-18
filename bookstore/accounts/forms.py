@@ -30,31 +30,6 @@ class EditUserProfileForm(ModelForm):
         fields = ['first_name', 'last_name','nickname','email_address']
 
 
-    '''def clean_email_address(self):
-        new_email = self.cleaned_data['email_address']
-        #old_email = request.session
-
-        try:
-            validate_email(new_email)
-
-        except ValidationError:
-            pass
-
-        if User.objects.filter(email_address=new_email).exists():
-            raise ValidationError("Email address already exists")
-
-
-        return new_email
-
-    def clean_nickname(self):
-        data = self.cleaned_data['nickname']
-
-        if User.objects.filter(nickname=data).exists():
-            raise ValidationError("Nickname already exists")
-
-        return data'''
-
-
 class AddressForm(ModelForm):
     street_address = forms.CharField(max_length=255, label="Street Address")
     city = forms.CharField(max_length=50, label="City")
@@ -62,7 +37,7 @@ class AddressForm(ModelForm):
     zip_code = forms.CharField(max_length=5, label="Zip Code")
 
     class Meta:
-        model= Address
-        fields= ['street_address','city','state','zip_code']
+        model = Address
+        fields = ['street_address','city','state','zip_code']
 
 

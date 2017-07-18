@@ -5,11 +5,10 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import DeleteView, CreateView
-
-from payments.models import Order
+from payments.models import Order, FutureOrder
 from .forms import EditUserProfileForm, UserCreateForm, AddressForm
 from .models import User, Address
-#from pyusps import address_information
+from django.contrib import messages
 
 
 #########################################################################################################
@@ -39,6 +38,15 @@ def login_view(request):
                      user_id=current_user.user_id
                 ).order_by('date_created').last()
 
+                # find future order list of user
+                future_order_cart = FutureOrder.objects.get(
+                    user_id=current_user.user_id
+                )
+
+                # set future order id into request.session
+                if future_order_cart:
+                    request.session['fOrderId'] = future_order_cart.id
+
                 # check if latest cart exists or has already been purchased
                 if latest_cart:
 
@@ -58,6 +66,11 @@ def login_view(request):
                 else:
                     new_cart = create_shopping_cart(current_user.user_id)
                     request.session['orderId'] = new_cart.id
+
+                    if not future_order_cart:
+                        future_cart = create_future_order(current_user.user_id)
+                        request.session['fOrderId'] = future_cart.id
+
                     return HttpResponseRedirect(next)
 
             # account is not active
@@ -77,6 +90,13 @@ def create_shopping_cart(user_id):
     return o
 
 
+# create a future order for new users who login in to website
+def create_future_order(user_id):
+    future_order = FutureOrder.objects.create(user_id=user_id)
+    future_order.save()
+    return future_order
+
+
 @csrf_protect
 def manage_account(request):
     online_user = request.user
@@ -93,9 +113,6 @@ def manage_account(request):
             old_nickname = User.objects.get(user_id=online_user.id)
             if not old_nickname == form.cleaned_data['nickname']:
                 online_user.nickname = form.cleaned_data['nickname']
-
-
-
 
             # validate if email exists
 
@@ -153,6 +170,7 @@ class AddressDelete(DeleteView):
     model = Address
 
     def get_success_url(self):
+        messages.success(self.request, 'Address was successfully removed.')
         return reverse('accounts:displayAddress')
 
     def get_object(self):
@@ -171,6 +189,7 @@ class AddressCreate(CreateView):
         return super(AddressCreate, self).form_valid(form)
 
     def get_success_url(self):
+        messages.succcess(self.request, 'Address was successfully created.')
         return reverse('accounts:displayAddress')
 
 

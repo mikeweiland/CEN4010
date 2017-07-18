@@ -104,3 +104,16 @@ body{
    text-align:center;
 }
 
+.radio{
+        display:inline-block;
+        margin: 0 20px 0 20px;
+}
+
+table.bookDetails{
+    table-layout:fixed;
+    width:200px;
+}
+
+table.bookDetails td.bookDetails{
+    width:50px;
+}
