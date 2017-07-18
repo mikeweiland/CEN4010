@@ -10,6 +10,7 @@ from datetime import datetime
 from accounts.models import User
 from products.models import Book
 from django.db import models
+from accounts.models import Address
 
 
 class CreditCard(models.Model):
@@ -38,6 +39,8 @@ class Order(models.Model):
     date_created = models.DateTimeField(default=datetime.now, blank=True)
     date_ordered = models.DateTimeField(default=datetime.now, blank=True)
     payed_order = models.BooleanField(default=False)
+    # add later an address field
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, blank=True, null=True, related_name='addresses')
 
     def __str__(self):
         return self.user.nickname + " Order Id : " + str(self.id)
@@ -49,7 +52,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     id = models.AutoField(primary_key=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orders')
     book = models.ForeignKey(Book, related_name='books')
     quantity = models.IntegerField(default=1)
     payed_item = models.BooleanField(default=False)

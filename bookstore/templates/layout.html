@@ -17,6 +17,7 @@
         font-size:17px;
         font-family:arial;
     }
+
     </style>
 </head>
 <body style="background-color: silver">
@@ -114,7 +115,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'accounts:manageAccount' %}">Manage Account</a></li>
                             <li><a href="{% url 'payments:displayCC' %}">Manage Payment Method</a></li>
-                            <li><a href="#">Manage Shipping Address</a></li>
+                            <li><a href="{% url 'accounts:displayAddress' %}">Manage Shipping Address</a></li>
                         </ul>
                     </li>
                     {% else %}
