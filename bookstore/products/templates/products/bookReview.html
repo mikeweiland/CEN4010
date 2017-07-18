@@ -1,0 +1,61 @@
+{% load static from staticfiles %}
+{% load bootstrap3 %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container">
+    <h2>Book Review</h2>
+    <p style="padding:20px"></p>
+    <form method="POST" action="{% url 'products:addBookReview' %}" class="form-horizontal" role="form">{% csrf_token %}
+            <div class="form-group">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <div class="col-sm-2 control-label">
+                    <label for="user_rating">Rating</label>
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="number" name="user_rating" id="user_rating" min="1" max="10" value="5">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">
+                    <label for="review_header">Review Heading</label>
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" name="review_header" id="review_header">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">
+                    <label for="review_body">Review Body</label>
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="textarea" rows="8" cols="80" name="review_body" id="review_body">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">
+                    <label for="anonymous">Anonymous</label>
+                </div>
+                <div class="col-sm-4">
+                    <input type="hidden" name="anonymous" value="False">
+                    <input class="form-control" type="checkbox" name="anonymous" id="anonymous" value="True">
+                </div>
+            </div>
+            <p style="padding:10px;"></p>
+
+        <div class="col-sm-offset-3 col-sm-2">
+            <button type="submit" class="btn btn-md btn-primary">Submit</button>
+        </div>
+    </form>
+    <p style="padding:25px"></p>
+</div>

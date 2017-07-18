@@ -1,4 +1,5 @@
 from django.contrib.auth import login, logout, authenticate
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -100,27 +101,26 @@ def create_future_order(user_id):
 @csrf_protect
 def manage_account(request):
     online_user = request.user
+    user = User.objects.get(pk=online_user.user_id)
     form = EditUserProfileForm(request.POST or None, initial={'first_name': online_user.first_name,
                                                     'last_name': online_user.last_name, 'nickname': online_user.nickname,
-                                                    'email_address': online_user.email_address})
+                                                    'email_address': online_user.email_address}, instance=request.user)
 
     if request.method == 'POST':
         if form.is_valid():
-            online_user.first_name = form.cleaned_data['first_name']
-            online_user.last_name = form.cleaned_data['last_name']
-            online_user.email_address = form.cleaned_data['email_address']
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.nickname = form.cleaned_data['nickname']
+            user.email_address = form.cleaned_data['email_address']
 
-            old_nickname = User.objects.get(user_id=online_user.id)
-            if not old_nickname == form.cleaned_data['nickname']:
-                online_user.nickname = form.cleaned_data['nickname']
+            user.save()
 
-            # validate if email exists
+            messages.success(request, 'User information changes have been successfully saved.')
 
+            return HttpResponseRedirect(reverse('index'))
 
-            #if email_is_valid:
-            online_user.save()
-            #else:
-                # return redirect to page to say that save was successful
+    else:
+        form = EditUserProfileForm(instance=online_user)
 
     return render(request, "accounts/manageAccount.html", {'form': form})
 
@@ -151,7 +151,7 @@ def display_address(request):
 
 @csrf_protect
 def update_address(request):
-    addr_id = request.POST.get("addr_id")
+    addr_id = request.GET.get("addr_id")
     addr = Address.objects.get(pk=addr_id)
     form = AddressForm(request.POST or None, initial={'street_address': addr.street_address, 'city': addr.city,
                                                              'state': addr.state, 'zip_code': addr.zip_code})
@@ -159,6 +159,15 @@ def update_address(request):
     if request.method == 'POST':
         if form.is_valid():
             addr.street_address = form.cleaned_data['street_address']
+            addr.city = form.cleaned_data['city']
+            addr.state = form.cleaned_data['state']
+            addr.zip_code = form.cleaned_data['zip_code']
+
+            addr.save()
+
+            messages.success(request, 'Address has been successfully updated.')
+
+            return HttpResponseRedirect(reverse('accounts:displayAddress'))
 
     else:
         form = AddressForm(instance=addr)

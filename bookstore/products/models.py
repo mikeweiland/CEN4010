@@ -46,6 +46,18 @@ class Book(models.Model):
         db_table = 'books'
 
 
+class TechValleyTimes(models.Model):
+    id = models.AutoField(primary_key=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return "Tech Valley Times : " + self.book.title
+
+    class Meta:
+        managed = True
+        db_table = 'tech_valley_times'
+
+
 class Review(models.Model):
     id = models.AutoField(primary_key=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
