@@ -4,6 +4,7 @@ from django.urls import reverse
 from . import models
 from django.views.generic import CreateView
 from .forms import ReviewForm
+from django.http import HttpResponseRedirect
 
 
 def books_by_genre(request, genre):
@@ -50,6 +51,22 @@ class ReviewCreate(CreateView):
         return super(ReviewCreate, self).form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, 'Thank you for reviewing this title!')
         return reverse('next')
 
+def add_book_review(request):
+    # get parameters from quantity form
+    user_id = request.user.user_id
+    user_rating = request.POST.get('user_rating')
+    review_header = request.POST.get('review_header')
+    review_body = request.POST.get('review_body')
+    anonymous = request.POST.get('anonymous')
+    book_id = request.POST.get('book_id')
 
+    # add order item to database
+    add_review = models.Review.objects.create(book_id=book_id, user_id=user_id, user_rating=user_rating,
+                                        review_header=review_header, review_body=review_body,
+                                        anonymous=anonymous)
+    add_review.save()
+
+    return HttpResponseRedirect(request.POST.get('next'))
