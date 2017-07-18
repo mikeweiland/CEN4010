@@ -25,7 +25,8 @@ def get_book_review(request):
 def get_book_details(request,title):
     book = models.Book.objects.get(title=title)
     book_by_author = models.Book.objects.filter(author_id=book.author.id)
-    return render(request, 'products/bookDetail.html', {'book': book, 'book_by_author': book_by_author})
+    reviews = models.Review.objects.filter(book_id=book.id)
+    return render(request, 'products/bookDetail.html', {'book': book, 'book_by_author': book_by_author, 'reviews':reviews})
 
 
 def search(request):
@@ -39,20 +40,6 @@ def search(request):
 #########################################################################################################
 ##                                   REVIEW FUNCTIONS                                                  ##
 ########################################################################################################
-
-class ReviewCreate(CreateView):
-    template_name = 'products/bookReview.html'
-    model = models.Review
-    form_class = ReviewForm
-
-    def form_valid(self,form):
-        form.instance.user = self.request.user
-        form.save()
-        return super(ReviewCreate, self).form_valid(form)
-
-    def get_success_url(self):
-        messages.success(self.request, 'Thank you for reviewing this title!')
-        return reverse('next')
 
 def add_book_review(request):
     # get parameters from quantity form
