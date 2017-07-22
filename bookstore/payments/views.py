@@ -158,14 +158,11 @@ def update_from_shopping_cart_page(request):
     quantity = request.POST.get('quantity')
     order_item_id = request.POST.get('order_item_id')
 
-    print(quantity)
-
     order_item = OrderItem.objects.get(pk=order_item_id)
 
-    if quantity == order_item.quantity:
-        print("The same shit!!!")
-    else:
-        print('Got something different!!!')
+    order_item.quantity = quantity
+
+    order_item.save()
 
     return HttpResponseRedirect(reverse('payments:shoppingCart'))
 

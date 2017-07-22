@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^shoppingCart/', views.display_shopping_cart, name='shoppingCart'),
-    url(r'^shoppingCart/updateCart/', views.update_from_shopping_cart_page, name='updateShoppingCart'),
+    url(r'^updateCart/', views.update_from_shopping_cart_page, name='updateShoppingCart'),
     url(r'^addBook/', views.add_book_to_cart, name='addBook'),
     url(r'^addFutureBook/', views.add_future_order_item, name='addFutureBookOrder'),
     url(r'^removeBook/$', views.remove_book_from_cart, name='deleteBook'),
