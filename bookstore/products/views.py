@@ -5,7 +5,8 @@ from . import models
 from django.views.generic import CreateView
 from .forms import ReviewForm
 from django.http import HttpResponseRedirect
-
+import unicodedata
+import re
 
 def books_by_genre(request, genre):
     books = models.Book.objects.filter(genre=genre)
@@ -28,14 +29,26 @@ def get_book_details(request,title):
     reviews = models.Review.objects.filter(book_id=book.id)
     return render(request, 'products/bookDetail.html', {'book': book, 'book_by_author': book_by_author, 'reviews':reviews})
 
+def order_author(request):
+    search_request = request.GET.get('bookSearch')
+    author = models.Book.objects.filter(Q(author__first_name__startswith= search_request) )
+    author=author.all().order_by('author__first_name')
+    return render(request,'products/bookAuthorResult.html', {'books': author, 'search_request': search_request})
+
+def rating(request):
+    search_request = request.GET.get('bookSearch')
+    ratings = models.Book.objects.filter(Q(rating__icontains=search_request) | Q(rating__contains=search_request))
+    ratings=ratings.all().order_by('-rating')
+    return render(request, 'products/RatingSearchResult.html', {'books': ratings, 'search_request': search_request})
 
 def search(request):
     search_request = request.GET.get('bookSearch')
     books = models.Book.objects.filter(
-        Q(title__icontains=search_request) | Q(title__contains=search_request)
-    )
+        Q(title__icontains=search_request) | Q(title__contains=search_request)|
+        Q(author__first_name=search_request) | Q(author__last_name=search_request)|
+    Q(rating__icontains=search_request) | Q(rating__contains=search_request)
+    ).distinct()
     return render(request, 'products/bookSearchResult.html', {'books': books, 'search_request': search_request})
-
 
 #########################################################################################################
 ##                                   REVIEW FUNCTIONS                                                  ##
@@ -57,3 +70,8 @@ def add_book_review(request):
     add_review.save()
 
     return HttpResponseRedirect(request.POST.get('next'))
+
+#########################################################################################################
+##                                   Joshua Functions                                                  ##
+########################################################################################################
+

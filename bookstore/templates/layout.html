@@ -21,42 +21,44 @@
     </style>
 </head>
 <body style="background-color: silver">
+<style>
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button5 {
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+}
+</style>
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 
-        <div class="container">
             <div class="navbar-header">
-                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse"
-                        data-target="#navbarTop" aria-controls="navbar" aria-expanded="false">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Bard's Big Bad Bookstore</a>
-            </div>
-
-            <div class="navbar-collapse collapse" id="navbarTop">
+                    <div class="navbar-collapse collapse" id="navbarTop">
                 <ul class="nav navbar-nav navbar-center">
                     <li><!-- Search for books form -->
                         <form class="form-inline my-2 my-lg-0" action="{% url 'products:search' %}" method="GET">
-                            <input class="form-control input-md  mr-sm-4" type="search" name="bookSearch" placeholder="Search Book" >
+                            <input class="form-control input-md  mr-sm-4" type="search" name="bookSearch" placeholder="Search Book" value='{{request.get.q}}'>
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><span
                                     style="color:black" class="glyphicon glyphicon-search"></span></button>
                         </form>
                     </li>
                 </ul>
-                <!-- Link to Shopping Cart -->
-                <ul class="nav navbar-nav navbar-right">
-                    {% if user.is_authenticated %}
-                    <li><a class="nav-link" href="#">Hello {{ user.nickname }}</a></li>
-                    {% endif %}
-                    <li><a class="nav-link" href="{% url 'payments:shoppingCart' %}"><span class="glyphicon glyphicon-shopping-cart">
-                         </span> Cart</a></li>
-                </ul>
+                                </div>
+                                    <!-- Link to Home page -->
+                   <a class="navbar-brand collapsed"  href="{% url 'index' %}">  Bard's Big Bad Bookstore<span class="sr-only">(current)</span>
+                </a>
 
-            </div>
-
-            <div class="navbar-header">
                 <button class="navbar-toggle collapsed" type="button" data-toggle="collapse"
                         data-target="#navbar" aria-controls="navbar" aria-expanded="false">
                     <span class="sr-only">Toggle Navigation</span>
@@ -69,11 +71,6 @@
             <div class="navbar-collapse collapse" id="navbar">
                 <ul class="nav navbar-nav">
 
-                    <!-- Link to Home page -->
-                    <li>
-                        <a class="navTabColor" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
-                    </li>
-
                     <!-- Link to Dropdown for genre of Books -->
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -85,6 +82,36 @@
                             <li><a href="{% url 'products:bookGenre' 'iot' %}">Internet of Things</a></li>
                             <li><a href="{% url 'products:bookGenre' 'history' %}">History</a></li>
                             <li><a href="{% url 'products:bookGenre' 'social' %}">Social</a></li>
+                            <hr>
+                            <form class="form-inline my-2 my-lg-0" action="{% url 'products:authorse' %}" method="GET">
+                            <div class="form-group">
+                                <label for="sel2"></label>
+                                <select class="" hidden id="sel2" name="bookSearch" placeholder="Search Book" value='{{request.get.q}}'>
+                                    <option> </option>
+                                </select>
+                            </div>
+                             <button class="button button5" type="submit"> <li>Author</li></button>
+                            </form>
+                            <hr>
+
+                            <form class="form-inline my-2 my-lg-0" action="{% url 'products:rating' %}" method="GET">
+                            <div class="form-group">
+                                <label for="sel1"></label>
+                                <select class="" id="sel1" name="bookSearch" placeholder="Search Book" value='{{request.get.q}}'>
+                                    <option> </option>
+                                    <option>5.</option>
+                                    <option> 4. </option>
+                                    <option> 3. </option>
+                                    <option> 2. </option>
+                                    <option> 1. </option>
+                                </select>
+                            </div>
+                             <button class="button button5" type="submit"> <li>Rating</li></button>
+
+
+
+                        </form>
+
                         </ul>
                     </li>
 
@@ -93,31 +120,45 @@
                     <!-- Link to Countact Us page -->
                     <li><a href="{% url 'contactUs' %}">Contact Us</a></li>
 
+
+
+
+
+
+
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-
                     {% if user.is_authenticated %}
-                    <li>
-                        <a href="{% url 'accounts:logout' %}">Logout</a>
-                    </li>
+
                     {% else %}
                     <li>
                         <!-- Login id target -->
                         <a href="#" class="nav-link" data-toggle="modal" data-target="#modalSignIn">Sign In</a>
                     </li>
                     {% endif %}
+                    <!-- Link to Dropdown for My Account -->
+                    <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            href="" aria-haspopup="true" aria-expanded="false">Hello {{ user.nickname }}<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'accounts:manageAccount' %}">Manage Account</a></li>
+                        <li><a href="{% url 'payments:displayCC' %}">Manage Payment Method</a></li>
+                        <li><a href="{% url 'accounts:displayAddress' %}">Manage Shipping Address</a></li>
+                        <li><hr></li>
+                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                        </ul>
+                    {% endif %}
+                                    <!-- Link to Shopping Cart -->
+                    <li><a class="nav-link" href="{% url 'payments:shoppingCart' %}"><span class="glyphicon glyphicon-shopping-cart">
+                         </span> Cart</a></li>
+                    <li><a class="nav-link" href="{% url 'payments:shoppingCart' %}"> </a></li>
+                </ul>
+
 
                     {% if user.is_authenticated %}
-                    <!-- Link to Dropdown for My Account -->
-                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button"
-                            href="" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span>
-                    </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'accounts:manageAccount' %}">Manage Account</a></li>
-                            <li><a href="{% url 'payments:displayCC' %}">Manage Payment Method</a></li>
-                            <li><a href="{% url 'accounts:displayAddress' %}">Manage Shipping Address</a></li>
-                        </ul>
-                    </li>
+
                     {% else %}
                     <li>
                         <a href="{% url 'accounts:signup' %}">Sign Up</a>
@@ -128,9 +169,10 @@
         </div>
     </nav>
 
-
-
+    <!-- Content* -->
+<div class="container">
     {% block content %}{% endblock %}
+    </div>
 
      <!-- Sign In Modal -->
     <div class="modal fade" id="modalSignIn" role="dialog">
