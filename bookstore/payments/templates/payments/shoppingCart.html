@@ -47,8 +47,8 @@
                         <form action="{% url 'payments:updateShoppingCart' %}" method="POST">
                             <div class="form-group">
                                 {% csrf_token %}
-                                <label class="fieldSizeFont" for="quantityValue">Quantity </label>
-                                <input type="number" name="quantity" id="quantityValue" style="width:50px;" value="{{ order_item.quantity }}" min="1">
+                                <label class="fieldSizeFont" for="quantityValue">Quantity</label>
+                                <input class="form-control" type="number" name="quantity" id="quantityValue" style="width:50px;" value="{{ order_item.quantity }}" min="1" max="{{ order_item.book.quantity }}">
                                 <input type="hidden" name="order_item_id" value="{{ order_item.id }}">
                                 <input type="hidden" name="next" value="{{ request.path }}">
                             </div>

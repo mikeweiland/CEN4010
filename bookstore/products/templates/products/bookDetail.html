@@ -41,13 +41,16 @@
         <div class="col-xs-3 col-sm-2 col-sm-push-3"  >
             <h3>Paperback</h3>
             <h3>${{ book.price }}</h3>
+            <h3>In stock: {{ book.quantity }}</h3>
             <p style="padding:5px;"></p>
             {% include 'payments/quantityForm.html' %}
 
             <form method="POST" action="{% url 'payments:addFutureBookOrder' %}">{% csrf_token %}
                 <input type="hidden" name="book_id" value="{{ book.id }}">
                 <input type="hidden" name="next" value="{{ request.path }}">
-                <button class="btn btn-md btn-primary">Add to Future Order</button>
+                <div style="padding:12px">
+                    <button class="btn btn-md btn-primary">Add to Future Order</button>
+                </div>
             </form>
 
         </div>
@@ -106,7 +109,7 @@
     <hr>
 
     <div class="row">
-        <div class="col-xs-12 col-sm-3 col-sm-push-1">
+        <div class="col-12">
             <h2>Customer Reviews</h2>
 
             <a class="btn btn-lg btn-success" data-toggle="modal" data-target="#modalReview">Write Review</a>
@@ -118,6 +121,41 @@
                    </div>
                </div>
             </div>
+            {% for review in reviews %}
+            <div class="well">
+                <div class="row">
+                    <h2>
+                        {{ review.review_header }}
+                        {% if review.user_rating >= 4 %}
+                            <span class="label label-success">Rating:  {{ review.user_rating }}</span>
+                        {% elif 2 < review.user_rating < 4 %}
+                            <span class="label label-warning">Rating:  {{ review.user_rating }}</span>
+                        {% else %}
+                            <span class="label label-danger">Rating:  {{ review.user_rating }}</span>
+                        {% endif %}
+                    </h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>
+                            {% if review.anonymous is True %}
+                                By Anonymous
+                            {% else %}
+                                By {{review.user.nickname}}
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>
+                            on {{review.published_date}}
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <p>{{review.review_body}}</p>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
