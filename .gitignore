@@ -104,3 +104,5 @@ ENV/
 aws_rds_auth.json
 
 .idea/
+migrations/
+www/

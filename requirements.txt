@@ -1,0 +1,3 @@
+mysqlclient
+Django
+django-bootstrap3
