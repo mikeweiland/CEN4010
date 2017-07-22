@@ -80,19 +80,20 @@ def manage_credit_card(request):
 ########################################################################################################
 
 def display_shopping_cart(request):
-    # get shopping cart id
-    order_id = request.session['orderId']
+    if request.session.get('orderId') != None:
+        # get shopping cart id
+        order_id = request.session['orderId']
 
-    # get future cart id
-    f_order_id = request.session['fOrderId']
+        # get future cart id
+        f_order_id = request.session['fOrderId']
 
-    order_items = OrderItem.objects.filter(order_id=order_id)
-    future_order_items = FutureOrderItem.objects.filter(future_order_id=f_order_id)
-    shopping_cart = Order.objects.filter(pk=order_id)
+        order_items = OrderItem.objects.filter(order_id=order_id)
+        future_order_items = FutureOrderItem.objects.filter(future_order_id=f_order_id)
+        shopping_cart = Order.objects.filter(pk=order_id)
 
-    return render(request, 'payments/shoppingCart.html', {'order_items': order_items, 'shopping_cart': shopping_cart,
+        return render(request, 'payments/shoppingCart.html', {'order_items': order_items, 'shopping_cart': shopping_cart,
                                                           'future_order_items': future_order_items})
-
+    return(request, '#' )
 
 def add_book_to_cart(request):
     # get parameters from quantity form

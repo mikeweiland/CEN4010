@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="container-fluid">
+<div class="container">
     <p style="padding:10px"></p>
     <h1 style="text-align:center;">{% block result_title %}{% endblock %}</h1>
 
@@ -21,21 +21,19 @@
                 <p style="color:gray"> by {{ book.author.first_name }} {{ book.author.last_name }} </p>
                 <p style="padding:5px"> </p>
                 <span class="badge">${{ book.price }}</span>
-                                                <p style="padding:5px"> </p>
-                <img src="/static/img/12.png"height="24" width="24"/>
+                                <p style="padding:5px"> </p>
                                 <span class="label label-info">Rating:  {{ book.rating }}</span>
             </div>
 
         </div>
         <hr>
         {% endfor %}
+
     </div>
 
     <div>
         <p style="padding:25px"></p>
     </div>
-
-</div>
 
 </div>
 
