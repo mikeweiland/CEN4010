@@ -34,45 +34,41 @@ def login_view(request):
                 login(request, user)
                 current_user = request.user
 
-                # find the latest shopping cart by user
-                latest_cart = Order.objects.filter(
-                     user_id=current_user.user_id
-                ).order_by('date_created').last()
-
-                # find future order list of user
-                future_order_cart = FutureOrder.objects.get(
-                    user_id=current_user.user_id
-                )
-
-                # set future order id into request.session
-                if future_order_cart:
-                    request.session['fOrderId'] = future_order_cart.id
-
-                # check if latest cart exists or has already been purchased
-                if latest_cart:
+                try:
+                    # find the latest shopping cart by user
+                    latest_cart = Order.objects.filter(
+                        user_id=current_user.user_id
+                    ).order_by('date_created').last()
 
                     # create new shopping cart if latest cart has been payed
                     if latest_cart.payed_order:
                         new_cart = create_shopping_cart(current_user.user_id)
                         request.session['orderId'] = new_cart.id
-                        return HttpResponseRedirect(next)
 
                     # use existing shopping cart that has not been payed for
                     # used when shoppers log off then log back in with preexisting shopping cart and books stored inside
                     else:
                         request.session['orderId'] = latest_cart.id
-                        return HttpResponseRedirect(next)
-
-                # create  new shopping cart for first time users
-                else:
+                        
+                except:
+                    # create  new shopping cart if cart query fails
                     new_cart = create_shopping_cart(current_user.user_id)
                     request.session['orderId'] = new_cart.id
 
-                    if not future_order_cart:
-                        future_cart = create_future_order(current_user.user_id)
-                        request.session['fOrderId'] = future_cart.id
+                try:
+                    # find future order list of user
+                    future_order_cart = FutureOrder.objects.get(
+                        user_id=current_user.user_id
+                    )
 
-                    return HttpResponseRedirect(next)
+                    request.session['fOrderId'] = future_order_cart.id
+
+                except:
+                    # create  new shopping cart for first time users
+                    new_future_order = create_future_order(current_user.user_id)
+                    request.session['fOrderId'] = new_future_order.id
+
+                return HttpResponseRedirect(next)
 
             # account is not active
             else:
@@ -200,6 +196,3 @@ class AddressCreate(CreateView):
     def get_success_url(self):
         messages.succcess(self.request, 'Address was successfully created.')
         return reverse('accounts:displayAddress')
-
-
-
