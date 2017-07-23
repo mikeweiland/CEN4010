@@ -9,12 +9,20 @@
                 <div class="row">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="nicknameId" class="col-sm-2" >Username</label>
-                        <input type="text" class="col-sm-3" id="nicknameId" name="nickname" placeholder="Username">
+                        <div class="col-sm-2">
+                                <label for="nicknameId">Username</label>
+                        </div>
+                        <div class="col-sm-3">
+                                <input type="text" class="form-control" id="nicknameId" name="nickname" placeholder="Username">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="passwordId" class="col-sm-2" >Password</label>
-                        <input type="password" class="col-sm-3" id="passwordId" name="password" placeholder="Password">
+                        <div class="col-sm-2">
+                                <label for="passwordId">Password</label>
+                        </div>
+                        <div class="col-sm-3">
+                                <input type="password" class="form-control" id="passwordId" name="password" placeholder="Password">
+                        </div>
                     </div>
                     <input type="hidden" name="next" value="{{ request.path }}">
                 </div>

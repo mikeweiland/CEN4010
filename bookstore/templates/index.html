@@ -11,15 +11,8 @@
 
 {% block content %}
 
-    <div class="container">
+<div class="container">
 <style type="text/css">
-h3 {
-  display: inline-block;
-  padding: 10000px;
-  background: #B9121B;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
 
 .full-screen {
   background-size: 80%;
@@ -39,14 +32,16 @@ h3 {
     background-size: cover;
     -o-background-size: cover;
 }
-    .carousel-caption {
-     max-width: 80%;
-     width:80%;
-     background-color: #5a3531;
-    }
-</style>
 
-<style type="text/javascript">
+.carousel-caption {
+  max-width: 80%;
+  width:80%;
+  background-color: #5a3531;
+}
+
+</style>
+<!--
+<script type="text/javascript">
 var $item = $('.carousel .item');
 var $wHeight = $(window).height();
 $item.eq(0).addClass('active');
@@ -73,49 +68,48 @@ $('.carousel').carousel({
   pause: "false"
 });
 
-</style>
-            {% if messages %}
-        {% for message in messages %}
-            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+</script>
+-->
+{% if messages %}
+  {% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+  {% endfor %}
+{% endif %}
+
 <div class="carousel slide" data-ride="carousel" id="mycarousel" style="width: 100%">
-            <ol class="carousel-indicators">
-                <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#mycarousel" data-slide-to="1"></li>
-                <li data-target="#mycarousel" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="item active pic">
-                    <img src="{% static 'img/Book1.jpg' %}" alt="image">
-                    <div class="carousel-caption">
-                        <h2>Welcome to Bard's Big Bad Bookstore</h2>
-                        <p>We have one of the largest selection of books for affordable prices</p>
-                    </div>
-                </div>
-                <div class="item pic">
-                    <img src="{% static 'img/Book2.jpg' %}" alt="image">
-                    <div class="carousel-caption">
-                        <h2>The best book store in your city, selling the best in Tech and Sci Fi books with
-                    amazing prices</h2>
-                        <p>The best Science Fiction books</p>
-                    </div>
-                </div>
-                <div class="item pic">
-                    <img src="{% static 'img/Book3.jpg' %}" alt="image">
-                    <div class="carousel-caption">
-                        <h2>Cheap and reliable Prices all year round</h2>
-                        <p>The best books in Computer Science</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <ol class="carousel-indicators">
+    <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#mycarousel" data-slide-to="1"></li>
+    <li data-target="#mycarousel" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="item active pic">
+      <img src="{% static 'img/Book1.jpg' %}" alt="image"></img>
+      <div class="carousel-caption">
+        <h2>Welcome to Bard's Big Bad Bookstore</h2>
+        <p>We have one of the largest selection of books for affordable prices</p>
+      </div>
     </div>
+    <div class="item pic">
+      <img src="{% static 'img/Book2.jpg' %}" alt="image"></img>
+      <div class="carousel-caption">
+        <h2>The best book store in your city, selling the best in Tech and Sci Fi books with amazing prices</h2>
+        <p>The best Science Fiction books</p>
+      </div>
+    </div>
+    <div class="item pic">
+      <img src="{% static 'img/Book3.jpg' %}" alt="image"></img>
+      <div class="carousel-caption">
+        <h2>Cheap and reliable Prices all year round</h2>
+        <p>The best books in Computer Science</p>
+      </div>
+    </div>
+  </div>
   <!-- Controls -->
   <a class="left carousel-control" href="#mycarousel" role="button" data-slide="prev">
     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -127,11 +121,9 @@ $('.carousel').carousel({
   </a>
 </div>
 
+<div>
+  <p style="padding:25px"></p>
+</div>
 
-
-
-    <div>
-        <p style="padding:25px"></p>
-    </div>
-    </div>
 {% endblock %}
+</div>
