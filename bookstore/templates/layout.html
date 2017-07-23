@@ -140,7 +140,7 @@
                     <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button"
-                            href="" aria-haspopup="true" aria-expanded="false">Hello {{ user.nickname }}<span class="caret"></span>
+                            href="" aria-haspopup="true" aria-expanded="false">Hello {{ user.nickname }} <span class="glyphicon glyphicon-user"></span><span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="{% url 'accounts:manageAccount' %}">Manage Account</a></li>

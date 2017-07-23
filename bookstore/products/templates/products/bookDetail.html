@@ -24,18 +24,31 @@
 {% endif %}
 
 <div class="container">
-    <p style="padding:25px"> </p>
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center">
+                <h1>{{ book.title }}</h1>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-xs-6 col-sm-3 col-sm-push-1">
             <a href="#" id="pop">
-                <img id="imageResource" src="{% static  book.cover_file_name  %}" class="result" height="300" width="300" style="cursor:zoom-in;">
+                <img id="imageResource" src="{% static  book.cover_file_name  %}" class="img-responsive img-rounded" height="300" width="300" style="cursor:zoom-in;">
             </a>
         </div>
         <div class="col-xs-3 col-sm-3 col-sm-push-2" style="border-right:1px solid white; height:310px;">
-            <h3>{{ book.title }}</h3>
-            <h4>by {{ book.author.first_name }} {{book.author.last_name }}</h4>
-            <h4>{{ book.rating }} Rating</h4>
+            <h3>by {{ book.author.first_name }} {{book.author.last_name }}</h3>
+            <h3>
+                {% if book.rating >= 4 %}
+                    <span class="label label-success">Rating:  {{ book.rating }}</span>
+                {% elif 2 < book.rating < 4 %}
+                    <span class="label label-warning">Rating:  {{ book.rating }}</span>
+                {% else %}
+                    <span class="label label-danger">Rating:  {{ book.rating }}</span>
+                {% endif %}
+            </h3>
 
         </div>
         <div class="col-xs-3 col-sm-2 col-sm-push-3"  >
@@ -110,9 +123,22 @@
 
     <div class="row">
         <div class="col-12">
-            <h2>Customer Reviews</h2>
+            <div class="row">
+                <div class="col-md-3">
+                    <h2>Customer Reviews</h2>
+                </div>
+                <div class="col-md-9">
+                    <h2>
+                        <a class="btn btn-md btn-success" data-toggle="modal" data-target="#modalReview">
+                            Write Review
+                            <span class="glyphicon glyphicon-comment"></span>
+                        </a>
+                    </h2>
+                </div>
+            </div>
 
-            <a class="btn btn-lg btn-success" data-toggle="modal" data-target="#modalReview">Write Review</a>
+            <br></br>
+
             <!-- Review Form Modal -->
             <div class="modal fade" id="modalReview" role="dialog">
                <div class="modal-dialog">
@@ -166,7 +192,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-              <img src="" id="imagepreview" style="width: 560px; height: 300px; ">
+              <img src="" id="imagepreview" class="center-block">
             </div>
           </div>
         </div>
